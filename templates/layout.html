@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Registration form</title>
+     
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+       <img src="{{ url_for('static', filename='images/logo.jpg') }}" alt="Logo" class="basic-image">
+
+</head>
+<body>
+    <h4>Registration of New Student</h4>
+    <nav>
+        <a href="{{ url_for('index') }}">Home</a>
+        <a href="{{ url_for('new_register') }}">Enrollment</a>
+        <a href="{{ url_for('fee_structure') }}">Fee_Structure</a>      
+
+    </nav>
+    <hr>
+    {% block content %}{% endblock %}
+</body>
+<div class="footer">
+    <h5> This page is develped by Umesh Gupta  </h5>
+    <h5> follow me on Facebook , Email me umesh112ec@gmail.com </h5>
+    <a href="https://www.facebook.com/" target="_blank">Visit Here</a>
+
+    
+</div>
+</html>

@@ -1,0 +1,1 @@
+web: gunicorn cm-rise-registration-app:app

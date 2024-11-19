@@ -1,0 +1,77 @@
+{% extends "layout.html" %}
+{% block content %}
+<h5>Enrolled Students</h5>
+
+<table class="styled-table", id="data-table">
+    <thead>
+    <tr>
+        <th>S #</th>
+        <th>First Name</th>
+        <th>Last Name</th>
+        <th>Subject</th>
+        <th>Class</th>
+        <th>Title</th>
+        <th>Registration fee</th>
+        <th>Comment</th>
+        <th>Edit</th>
+        <th>Delete</th>
+     </tr> 
+    </thead>
+    <tbody>
+    {% for reg in registration %}
+      <tr>    
+      <td> * </td>
+      <td> {{ reg[1]}} </td>
+      <td> {{ reg[2]}} </td>
+      <td> {{ reg[3]}} </td>
+      <td> {{ reg[4]}} </td>
+      <td> {{ reg[5]}} </td>
+      <td> {{ reg[6]}} </td>
+      <td> {{ reg[7]}} </td>    
+      <td>  <a href="{{ url_for('edit_register', register_id=reg[0]) }}">Edit</a> </td>
+      <td>  <a href="{{ url_for('delete_register', register_id=reg[0]) }}" onclick="return confirm('Are you sure to Delete the registration?')">Delete</a></td>
+    </tr>
+        {% endfor %}
+    </tbody>    
+</table>
+<button onclick="exportTableToExcel('data-table', 'table-data')">Export to Excel</button>
+
+
+ <script>
+        function exportTableToExcel(tableID, filename = 'table-data') {
+            let table = document.getElementById(tableID);
+
+            // Create an HTML table with proper Excel structure
+            let tableHTML = `
+                <html xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:x="urn:schemas-microsoft-com:office:excel">
+                <head>
+                    <!-- Excel compatibility -->
+                    <meta charset="UTF-8">
+                    <style>
+                        table { border-collapse: collapse; }
+                        td, th { border: 1px solid #000; padding: 5px; }
+                    </style>
+                </head>
+                <body>
+                    ${table.outerHTML}
+                </body>
+                </html>
+            `;
+
+            // Create a Blob for Excel
+            let blob = new Blob([tableHTML], { type: "application/vnd.ms-excel" });
+
+            // Create a link element for download
+            let downloadLink = document.createElement("a");
+            downloadLink.href = URL.createObjectURL(blob);
+            downloadLink.download = `${filename}.xls`;
+
+            // Trigger the download
+            downloadLink.click();
+        }
+    </script>
+
+<h5> Total Students Enrolled ==>  {{enrolcount}},  Enrollment In Class10==>  {{class10}}, Enrollment in Class11 ==>  {{class11}}
+     Enrollment in Class12 ==> {{class12}}, Total Fees Collected ==> {{ sums}}     </h5>
+   
+{% endblock %}

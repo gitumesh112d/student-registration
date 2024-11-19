@@ -1,0 +1,32 @@
+{% extends "layout.html" %}
+{% block content %}
+<h3>Update Details</h3>
+
+<form method="POST">
+
+    <label for="fname">First Name:</label>
+    <input type="text" id="fname" name="fname" value="{{ reg[1] }}" required>
+    <br>
+    <label for="lname">Last Name:</label>
+    <input type="text" id="lname" name="lname" value="{{ reg[2] }}" required>
+    <br>
+    <label for="subject">Subject:</label>
+    <input type="text" id="subject" name="subject" value="{{ reg[3] }}" required>
+    <br>
+    <label for="class">Class:</label>
+    <input type="text" id="class" name="class" value="{{ reg[4] }}" required>
+    <br>
+    <label for="title">Title:</label>
+    <input type="text" id="title" name="title" value="{{ reg[5] }}" required>
+    <br>
+    <label for="regfee">Registration_Fees:</label>
+    <input type="text" id="regfee" name="regfee" value="{{ reg[6] }}" required>
+    <br>
+    <label for="comment">Comment:</label>
+    <input type="text" id="comment" name="comment" value="{{ reg[7] }}" required>
+    <br>
+    
+    <button type="submit">Save Changes</button>
+</form>
+     
+{% endblock %}

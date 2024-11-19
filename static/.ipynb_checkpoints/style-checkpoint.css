@@ -1,0 +1,168 @@
+/* style.css */
+
+body {
+    font-family: Arial, sans-serif;
+    background-color: #f4f4f9;
+    color: #333;
+    margin: 0;
+    padding: 0;
+}
+
+
+/* Basic Styling */
+.basic-image {
+ 
+    max-width: 60px; /* Adjust size as needed */
+        height: auto;
+}
+
+/* Basic form container styling */
+.form-container {
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 70px;
+    border: 3px solid #aaa;
+    border-radius: 10px;
+    background-color: #f1f1f1;
+    box-shadow: 5 4px 6px rgba(0, 0, 0, 0.1);
+    font-family: Arial, sans-serif;
+}
+
+/* Form elements styling */
+.form-container label {
+    display: block;
+    font-weight: bold;
+    margin-bottom: 1px;
+    color: #333;
+}
+
+.form-container input,
+.form-container select {
+    width: 100%;
+    padding: 7px;
+    margin-bottom: 15px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    font-size: 10px;
+    box-sizing: border-box;
+}
+
+.form-container input:focus,
+.form-container select:focus {
+    border-color: #007BFF;
+    outline: none;
+    box-shadow: 0 0 5px rgba(0, 123, 255, 0.5);
+}
+
+/* Submit button styling */
+.form-container button {
+    width: 100%;
+    padding: 10px;
+    background-color: #007BFF;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    font-size: 16px;
+    font-weight: bold;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+.form-container button:hover {
+    background-color: #0056b3;
+}
+
+
+h1 {
+    color: green;
+    text-align: center;
+}
+
+
+h2 {
+    color: green;
+    text-align: center;
+}
+
+h3 {
+    color: green;
+    text-align: center;
+}
+
+h4 {
+    color: green;
+    text-align: center;
+}
+
+nav {
+    text-align: left;
+    margin-bottom: 10px;
+}
+
+nav a {
+    margin: 0 05px;
+    color: #007bff;
+    text-decoration: none;
+}
+
+nav a:hover {
+    text-decoration: underline;
+}
+
+
+/* Table Styling */
+.styled-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 25px 0;
+    font-size: 18px;
+    text-align: left;
+    box-shadow: 0 0 20px rgba(0, 0, 0, 0.15);
+    background-color: #ffffff;
+}
+
+/* Header Row */
+.styled-table thead tr {
+    background-color: #009879;
+    color: #ffffff;
+    text-align: left;
+    font-weight: bold;
+}
+
+/* Table Cells */
+.styled-table th, 
+.styled-table td {
+    padding: 12px 15px;
+}
+
+/* Zebra Striping for Rows */
+.styled-table tbody tr:nth-of-type(even) {
+    background-color: #f3f3f3;
+}
+
+/* Highlighted Row */
+.styled-table tbody tr.active-row {
+    font-weight: bold;
+    color: #009879;
+}
+
+
+
+button, input[type="submit"] {
+    background-color: #007bff;
+    color: #fff;
+    border: none;
+    padding: 10px 15px;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+button:hover, input[type="submit"]:hover {
+    background-color: #0056b3;
+}
+
+.footer {
+    background-color: #ccc;
+    text-align: center;
+    padding: 2px;
+}
