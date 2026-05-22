@@ -28,8 +28,8 @@
       <td> {{ reg[5]}} </td>
       <td> {{ reg[6]}} </td>
       <td> {{ reg[7]}} </td>    
-      <td>  <a href="{{ url_for('edit_register', register_id=reg[0]) }}">Edit</a> </td>
-      <td>  <a href="{{ url_for('delete_register', register_id=reg[0]) }}" onclick="return confirm('Are you sure to Delete the registration?')">Delete</a></td>
+      <td>  <a href="{{ url_for('edit_register', register_id=reg.id) }}">Edit</a> </td>
+      <td>  <a href="{{ url_for('delete_register', register_id=reg.id) }}" onclick="return confirm('Are you sure to Delete the registration?')">Delete</a></td>
     </tr>
         {% endfor %}
     </tbody>    
