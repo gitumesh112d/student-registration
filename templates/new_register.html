@@ -20,6 +20,19 @@
     <label for="Regfee">Registration Fees:</label>
     <input type="text" id="Regfee" name="Regfee" placeholder="Enter Registration fee" required>
     <br>
+    
+    <label for="Mobile">Mobile No:</label>
+    <input type="text" id="Mobile" name="Mobile" placeholder="Enter Mobile number" required>
+    <br>
+    <label for="Status">Status:</label>
+    <input type="text" id="Status" name="Status" placeholder="Select Status" required>
+     <select name="status" id="status" required>
+      <option value="not started"  {% if reg.status == 'not started'  %}selected{% endif %}>Not Started</option>
+      <option value="in progress"  {% if reg.status == 'in progress'  %}selected{% endif %}>In Progress</option>
+      <option value="completed"    {% if reg.status == 'completed'    %}selected{% endif %}>Completed</option>
+     </select>
+    <br>
+
     <label for="comment">Comment:</label>
     <input type="text" id="comment" name="comment" placeholder="Comments are optional" >
     <br>

@@ -12,6 +12,8 @@
         <th>Class</th>
         <th>Title</th>
         <th>Registration fee</th>
+        <th>Mobile No</th>
+        <th>Status</th>
         <th>Comment</th>
         <th>Edit</th>
         <th>Delete</th>
@@ -27,6 +29,8 @@
       <td> {{ reg.class}} </td>
       <td> {{ reg.title}} </td>
       <td> {{ reg.registration_fees}} </td>
+      <td> {{ reg.mobile}} </td>
+      <td> {{ reg.status}} </td>
       <td> {{ reg.comment}} </td>    
       <td>  <a href="{{ url_for('edit_register', register_id=reg.id) }}">Edit</a> </td>
       <td>  <a href="{{ url_for('delete_register', register_id=reg.id) }}" onclick="return confirm('Are you sure to Delete the registration?')">Delete</a></td>

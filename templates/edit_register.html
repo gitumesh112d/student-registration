@@ -14,7 +14,7 @@
     <input type="text" id="subject" name="subject" value="{{ reg.subject }}" required>
     <br>
     <label for="class">Class:</label>
-    <input type="text" id="class" name="class" value="{{ reg.class_ }}" required>
+    <input type="text" id="class" name="class" value="{{ reg.class }}" required>
     <br>
     <label for="title">Title:</label>
     <input type="text" id="title" name="title" value="{{ reg.title }}" required>
@@ -25,7 +25,18 @@
     <label for="comment">Comment:</label>
     <input type="text" id="comment" name="comment" value="{{ reg.comment }}" required>
     <br>
+
+    <label for="mobile">Mobile:</label>
+    <input type="text" id="mobile" name="mobile" value="{{ reg.mobile }}" required>
+    <br>
     
+    <label for="status">Status:</label>
+  <select name="status" id="status" required>
+    <option value="not started"  {% if reg.status == 'not started'  %}selected{% endif %}>Not Started</option>
+    <option value="in progress"  {% if reg.status == 'in progress'  %}selected{% endif %}>In Progress</option>
+    <option value="completed"    {% if reg.status == 'completed'    %}selected{% endif %}>Completed</option>
+  </select>
+
     <button type="submit">Save Changes</button>
 </form>
      

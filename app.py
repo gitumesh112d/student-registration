@@ -2,6 +2,7 @@ from flask import Flask, render_template, request, redirect, url_for
 from flask_sqlalchemy import SQLAlchemy
  
 import os
+import requests
 
 app = Flask(__name__)
 
@@ -14,13 +15,15 @@ class Registration(db.Model):
     __tablename__ = 'registration'
 
     id = db.Column(db.Integer, primary_key=True)
-    f_name = db.Column('F_Name', db.String(100), nullable=False)
-    l_name = db.Column('L_Name', db.String(100), nullable=False)
-    subject = db.Column('Subject', db.String(100))
+    f_name = db.Column('F_Name', db.String(30), nullable=False)
+    l_name = db.Column('L_Name', db.String(30), nullable=False)
+    subject = db.Column('Subject', db.String(30))
     class_ = db.Column('Class', db.Integer, nullable=False)
     title = db.Column('Title', db.String(50))
     registration_fees = db.Column('Registration_fees', db.Float)
-    comment = db.Column('comment', db.String(300))
+    comment = db.Column('comment', db.String(50))
+    status = db.Column(db.String(10), default=' ')   
+    mobile = db.Column(db.String(10), nullable=True)    
 
 # ✅ Create tables if they don't exist
 with app.app_context():
@@ -80,6 +83,7 @@ def edit_register(register_id):
     reg = Registration.query.get_or_404(register_id)
 
     if request.method == 'POST':
+        old_status = reg.status                    # save old status
         reg.f_name = request.form['fname']
         reg.l_name = request.form['lname']
         reg.subject = request.form['subject']
@@ -87,8 +91,13 @@ def edit_register(register_id):
         reg.title = request.form['title']
         reg.registration_fees = request.form['regfee']
         reg.comment = request.form['comment']
+        reg.mobile = request.form['mobile']
+        reg.status = request.form['status'] 
 
         db.session.commit()
+          # ✅ Trigger SMS only when status changes to 'completed'
+        if old_status != 'completed' and reg.status == 'completed':
+            send_sms(reg.mobile, f"{reg.f_name} {reg.l_name}")
         return redirect(url_for('index'))
 
     return render_template('edit_register.html', reg=reg)
@@ -102,6 +111,29 @@ def delete_register(register_id):
     db.session.commit()
     return redirect(url_for('index'))
 
+
+ 
+# Route for SMS API  
+def send_sms(mobile, fname):
+    api_key = os.environ.get('FAST2SMS_API_KEY')  # store in env variable
+    
+    message = f"Dear {fname}, your registration is now completed. Welcome!"
+    
+    url = "https://www.fast2sms.com/dev/bulkV2"
+    payload = {
+        "route": "q",                    # transactional route
+        "message": message,
+        "language": "english",
+        "flash": 0,
+        "numbers": mobile       # 10 digit mobile number
+    }
+    headers = {
+        "authorization": api_key,
+        "Content-Type": "application/x-www-form-urlencoded"
+    }
+    
+    response = requests.post(url, data=payload, headers=headers)
+    return response.json()
 
 if __name__ == "__main__":
       app.run(debug=False, host='0.0.0.0', port=int(os.environ.get("PORT", 3000)))
