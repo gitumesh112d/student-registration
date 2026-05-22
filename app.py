@@ -10,6 +10,22 @@ app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 
 db = SQLAlchemy(app)
 
+class Registration(db.Model):
+    __tablename__ = 'registration'
+
+    id = db.Column(db.Integer, primary_key=True)
+    f_name = db.Column('F_Name', db.String(100), nullable=False)
+    l_name = db.Column('L_Name', db.String(100), nullable=False)
+    subject = db.Column('Subject', db.String(100))
+    class_ = db.Column('Class', db.Integer, nullable=False)
+    title = db.Column('Title', db.String(50))
+    registration_fees = db.Column('Registration_fees', db.Float)
+    comment = db.Column('comment', db.String(300))
+
+# ✅ Create tables if they don't exist
+with app.app_context():
+    db.create_all()
+
 # Add `enumerate` as a global function
 #app.jinja_env.globals.update(enumerate=enumerate)
 
