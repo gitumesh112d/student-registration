@@ -2,7 +2,7 @@ from flask import Flask, render_template, request, redirect, url_for
 import sqlite3
 import os
 
-
+app.config['SQLALCHEMY_DATABASE_URI'] = os.environ.get('DATABASE_URL')
 app = Flask(__name__)
 
 # Add `enumerate` as a global function
