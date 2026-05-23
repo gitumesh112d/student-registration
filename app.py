@@ -22,8 +22,8 @@ class Registration(db.Model):
     title = db.Column('Title', db.String(50))
     registration_fees = db.Column('Registration_fees', db.Float)
     comment = db.Column('comment', db.String(50))
-    status = db.Column(db.String(10), default=' ')   
-    mobile = db.Column(db.String(10), nullable=True)    
+    status = db.Column('status', db.String(10), default=' ')   
+    mobile = db.Column('mobile', db.String(10), nullable=True)    
 
 # ✅ Create tables if they don't exist
 with app.app_context():
@@ -69,7 +69,9 @@ def new_register():
             class_=request.form['class'],
             title=request.form['title'],
             registration_fees=request.form['Regfee'],
-            comment=request.form['comment']
+            comment=request.form['comment'],
+            status=request.form['status'],
+            mobile=request.form['mobile']
         )
         db.session.add(new_student)
         db.session.commit()
