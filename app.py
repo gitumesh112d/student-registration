@@ -66,9 +66,9 @@ def new_register():
             f_name=request.form['fname'],
             l_name=request.form['lname'],
             subject=request.form['subject'],
-            class_=request.form['class'],
+            class_=int(request.form['class']),
             title=request.form['title'],
-            registration_fees=request.form['Regfee'],
+            registration_fees=float(request.form['Regfee']),
             comment=request.form['comment'],
             status=request.form['status'],
             mobile=request.form['mobile']
@@ -89,9 +89,9 @@ def edit_register(register_id):
         reg.f_name = request.form['fname']
         reg.l_name = request.form['lname']
         reg.subject = request.form['subject']
-        reg.class_ = request.form['class']
+        reg.class_ = int(request.form['class'])
         reg.title = request.form['title']
-        reg.registration_fees = request.form['regfee']
+        reg.registration_fees = float(request.form['regfee'])
         reg.comment = request.form['comment']
         reg.mobile = request.form['mobile']
         reg.status = request.form['status'] 
