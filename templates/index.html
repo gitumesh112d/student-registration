@@ -1,81 +1,141 @@
 {% extends "layout.html" %}
 {% block content %}
-<h5>Enrolled Students</h5>
 
-<table class="styled-table", id="data-table">
-    <thead>
-    <tr>
-        <th>S #</th>
-        <th>First Name</th>
-        <th>Last Name</th>
-        <th>Subject</th>
-        <th>Class</th>
-        <th>Title</th>
-        <th>Registration fee</th>
-        <th>Mobile No</th>
-        <th>Status</th>
-        <th>Comment</th>
-        <th>Edit</th>
-        <th>Delete</th>
-     </tr> 
-    </thead>
-    <tbody>
-    {% for reg in registration %}
-      <tr>    
-      <td> * </td>
-      <td> {{ reg.f_name}} </td>
-      <td> {{ reg.l_name}} </td>
-      <td> {{ reg.subject}} </td>
-      <td> {{ reg.class_ }} </td>
-      <td> {{ reg.title}} </td>
-      <td> {{ reg.registration_fees}} </td>
-      <td> {{ reg.mobile}} </td>
-      <td> {{ reg.status}} </td>
-      <td> {{ reg.comment}} </td>    
-      <td>  <a href="{{ url_for('edit_register', register_id=reg.id) }}">Edit</a> </td>
-      <td>  <a href="{{ url_for('delete_register', register_id=reg.id) }}" onclick="return confirm('Are you sure to Delete the registration?')">Delete</a></td>
-    </tr>
-        {% endfor %}
-    </tbody>    
-</table>
-<button onclick="exportTableToExcel('data-table', 'table-data')">Export to Excel</button>
+<!-- Stats Cards -->
+<div class="stats-grid">
+    <div class="stat-card">
+        <div class="stat-icon">&#128100;</div>
+        <div class="stat-label">Total enrolled</div>
+        <div class="stat-value">{{ enrolcount }}</div>
+    </div>
+    <div class="stat-card">
+        <div class="stat-icon">&#128218;</div>
+        <div class="stat-label">Class 10</div>
+        <div class="stat-value">{{ class10 }}</div>
+    </div>
+    <div class="stat-card">
+        <div class="stat-icon">&#128218;</div>
+        <div class="stat-label">Class 11</div>
+        <div class="stat-value">{{ class11 }}</div>
+    </div>
+    <div class="stat-card">
+        <div class="stat-icon">&#128218;</div>
+        <div class="stat-label">Class 12</div>
+        <div class="stat-value">{{ class12 }}</div>
+    </div>
+    <div class="stat-card">
+        <div class="stat-icon">&#8377;</div>
+        <div class="stat-label">Fees collected</div>
+        <div class="stat-value">&#8377;{{ sums }}</div>
+    </div>
+</div>
 
+<!-- Students Table Card -->
+<div class="card">
+    <div class="card-header">
+        <div class="card-title">Enrolled students</div>
+        <div class="btn-actions">
+            <button class="export-btn" onclick="exportTableToExcel('data-table', 'enrolled-students')">
+                &#8659; Export to Excel
+            </button>
+        </div>
+    </div>
 
- <script>
-        function exportTableToExcel(tableID, filename = 'table-data') {
-            let table = document.getElementById(tableID);
+    <table class="styled-table" id="data-table">
+        <thead>
+            <tr>
+                <th>#</th>
+                <th>Student</th>
+                <th>Subject</th>
+                <th>Class</th>
+                <th>Title</th>
+                <th>Reg. fee</th>
+                <th>Mobile</th>
+                <th>Status</th>
+                <th>Comment</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for reg in registration %}
+            <tr>
+                <td class="text-muted" style="font-size:12px; font-family: 'DM Mono', monospace;">
+                    {{ loop.index }}
+                </td>
+                <td>
+                    <div class="student-cell">
+                        <div class="avatar">
+                            {{ reg.f_name[0] | upper }}{{ reg.l_name[0] | upper }}
+                        </div>
+                        <div>
+                            <div class="student-name">{{ reg.f_name }} {{ reg.l_name }}</div>
+                        </div>
+                    </div>
+                </td>
+                <td>{{ reg.subject }}</td>
+                <td>{{ reg.class_ }}</td>
+                <td class="text-muted">{{ reg.title }}</td>
+                <td style="font-family: 'DM Mono', monospace;">&#8377;{{ reg.registration_fees }}</td>
+                <td class="text-muted">{{ reg.mobile }}</td>
+                <td>
+                    {% if reg.status == 'completed' %}
+                        <span class="badge badge-completed">Completed</span>
+                    {% elif reg.status == 'in progress' %}
+                        <span class="badge badge-in-progress">In progress</span>
+                    {% else %}
+                        <span class="badge badge-not-started">Not started</span>
+                    {% endif %}
+                </td>
+                <td class="text-muted" style="font-size:12.5px;">{{ reg.comment or 'â€”' }}</td>
+                <td>
+                    <div class="btn-actions">
+                        <a href="{{ url_for('edit_register', register_id=reg.id) }}"
+                           class="btn btn-outline btn-sm">Edit</a>
+                        <form action="{{ url_for('delete_register', register_id=reg.id) }}"
+                              method="POST" style="display:inline;"
+                              onsubmit="return confirm('Delete this student record?')">
+                            <button type="submit" class="btn btn-danger btn-sm">Delete</button>
+                        </form>
+                    </div>
+                </td>
+            </tr>
+            {% else %}
+            <tr>
+                <td colspan="10" style="text-align:center; padding: 3rem; color: var(--text-3);">
+                    No students enrolled yet.
+                    <a href="{{ url_for('new_register') }}" style="color: var(--teal); text-decoration:none; font-weight:500;">
+                        Add the first one â†’
+                    </a>
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
 
-            // Create an HTML table with proper Excel structure
-            let tableHTML = `
-                <html xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:x="urn:schemas-microsoft-com:office:excel">
-                <head>
-                    <!-- Excel compatibility -->
-                    <meta charset="UTF-8">
-                    <style>
-                        table { border-collapse: collapse; }
-                        td, th { border: 1px solid #000; padding: 5px; }
-                    </style>
-                </head>
-                <body>
-                    ${table.outerHTML}
-                </body>
-                </html>
-            `;
+<!-- Summary Strip -->
+<div class="summary-strip">
+    <div><span>Total enrolled</span>{{ enrolcount }}</div>
+    <div><span>Class 10</span>{{ class10 }}</div>
+    <div><span>Class 11</span>{{ class11 }}</div>
+    <div><span>Class 12</span>{{ class12 }}</div>
+    <div><span>Total fees</span>&#8377;{{ sums }}</div>
+</div>
 
-            // Create a Blob for Excel
-            let blob = new Blob([tableHTML], { type: "application/vnd.ms-excel" });
+<script>
+function exportTableToExcel(tableID, filename) {
+    let table = document.getElementById(tableID);
+    let tableHTML = `
+        <html xmlns:o="urn:schemas-microsoft-com:office:office"
+              xmlns:x="urn:schemas-microsoft-com:office:excel">
+        <head><meta charset="UTF-8"></head>
+        <body>${table.outerHTML}</body></html>`;
+    let blob = new Blob([tableHTML], { type: "application/vnd.ms-excel" });
+    let link = document.createElement("a");
+    link.href = URL.createObjectURL(blob);
+    link.download = `${filename}.xls`;
+    link.click();
+}
+</script>
 
-            // Create a link element for download
-            let downloadLink = document.createElement("a");
-            downloadLink.href = URL.createObjectURL(blob);
-            downloadLink.download = `${filename}.xls`;
-
-            // Trigger the download
-            downloadLink.click();
-        }
-    </script>
-
-<h5> Total Students Enrolled ==>  {{enrolcount}},  Enrollment In Class10==>  {{class10}}, Enrollment in Class11 ==>  {{class11}}
-     Enrollment in Class12 ==> {{class12}}, Total Fees Collected ==> {{ sums}}     </h5>
-   
 {% endblock %}
