@@ -97,9 +97,11 @@ def edit_register(register_id):
         reg.status = request.form['status'] 
 
         db.session.commit()
-          # ✅ Trigger SMS only when status changes to 'completed'
+        # ✅ Trigger SMS only when status changes to 'completed'
         if old_status != 'completed' and reg.status == 'completed':
-            send_sms(reg.mobile, f"{reg.f_name} {reg.l_name}")
+            print(f"Sending SMS to {reg.mobile}")   # ✅ check Render logs
+            result = send_sms(reg.mobile, f"{reg.f_name} {reg.l_name}")
+            print(f"SMS result: {result}")  
         return redirect(url_for('index'))
 
     return render_template('edit_register.html', reg=reg)
