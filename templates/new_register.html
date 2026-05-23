@@ -25,12 +25,11 @@
     <input type="text" id="Mobile" name="Mobile" placeholder="Enter Mobile number" required>
     <br>
     <label for="Status">Status:</label>
-    <input type="text" id="Status" name="Status" placeholder="Select Status" required>
+    
      <select name="status" id="status" required>
-      <option value="not started"  {% if reg.status == 'not started'  %}selected{% endif %}>Not Started</option>
-      <option value="in progress"  {% if reg.status == 'in progress'  %}selected{% endif %}>In Progress</option>
-      <option value="completed"    {% if reg.status == 'completed'    %}selected{% endif %}>Completed</option>
-     </select>
+      <option value="not started" selected>Not Started</option>
+      <option value="in progress">In Progress</option>
+      <option value="completed">Completed</option>
     <br>
 
     <label for="comment">Comment:</label>
