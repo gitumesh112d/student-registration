@@ -1,38 +1,320 @@
 {% extends "layout.html" %}
 {% block content %}
-<h5>Enrollment form</h5>
-<form class="form-container" method="POST">
-    <label for="fname">First Name:</label>
-    <input type="text" id="fname" name="fname" placeholder="Enter your First name" required>
-    <br>
-    <label for="lname">Last Name:</label>
-    <input type="text" id="lname" name="lname" placeholder="Enter your Last name" required>
-    <br>
-    <label for="subject">Subject:</label>
-    <input type="text" id="subject" name="subject" placeholder="Enter your Subject" required>
-    <br>
-    <label for="class">Class:</label>
-    <input type="text" id="class" name="class" placeholder="Enter your Class" required>
-    <br>
-    <label for="title">Title:</label>
-    <input type="text" id="title" name="title" placeholder="Enter your Title" required>
-    <br>
-    <label for="Regfee">Registration Fees:</label>
-    <input type="text" id="Regfee" name="Regfee" placeholder="Enter Registration fee" required>
-    <br>
-    <label for="mobile">Mobile No:</label>
-    <input type="text" id="mobile" name="mobile" placeholder="Enter Mobile number" required>
-    <br>
-    <label for="status">Status:</label>
-    <select name="status" id="status" required>
-        <option value="not started" selected>Not Started</option>
-        <option value="in progress">In Progress</option>
-        <option value="completed">Completed</option>
-    </select>                                          <!-- ✅ added missing closing tag -->
-    <br>
-    <label for="comment">Comment:</label>
-    <input type="text" id="comment" name="comment" placeholder="Comments are optional">
-    <br>
-    <button type="submit">Register</button>
-</form>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,600;9..144,700&family=Work+Sans:wght@400;500;600;700&display=swap');
+
+  .enroll-shell {
+    --ink: #1F3A2E;
+    --ink-soft: #5B7568;
+    --bg: #F3F7F1;
+    --surface: #FFFFFF;
+    --line: #DCE6D8;
+    --primary: #2F5D46;
+    --primary-dark: #1F3E2F;
+    --accent: #E8A33D;
+    --accent-dark: #C9821F;
+    --error: #B3492F;
+
+    background: var(--bg);
+    background-image:
+      radial-gradient(circle at 12% 8%, rgba(47,93,70,0.06), transparent 45%),
+      radial-gradient(circle at 88% 92%, rgba(232,163,61,0.10), transparent 40%);
+    padding: clamp(20px, 6vw, 56px) 16px 64px;
+    min-height: 100%;
+    font-family: 'Work Sans', -apple-system, BlinkMacSystemFont, sans-serif;
+    color: var(--ink);
+    box-sizing: border-box;
+  }
+  .enroll-shell *, .enroll-shell *::before, .enroll-shell *::after { box-sizing: inherit; }
+
+  .enroll-card {
+    max-width: 560px;
+    margin: 0 auto;
+    background: var(--surface);
+    border-radius: 22px;
+    border: 1px solid var(--line);
+    box-shadow: 0 1px 2px rgba(31,62,47,0.04), 0 18px 40px -20px rgba(31,62,47,0.18);
+    overflow: hidden;
+  }
+
+  .enroll-header {
+    background: linear-gradient(155deg, var(--primary) 0%, var(--primary-dark) 100%);
+    color: #F3F7F1;
+    padding: 34px 28px 30px;
+    position: relative;
+  }
+  .enroll-eyebrow {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 12px;
+    font-weight: 600;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--accent);
+    margin: 0 0 10px;
+  }
+  .enroll-eyebrow::before {
+    content: '';
+    width: 7px;
+    height: 7px;
+    border-radius: 50%;
+    background: var(--accent);
+    box-shadow: 0 0 0 3px rgba(232,163,61,0.25);
+  }
+  .enroll-title {
+    font-family: 'Fraunces', serif;
+    font-weight: 600;
+    font-size: clamp(24px, 5vw, 30px);
+    line-height: 1.2;
+    margin: 0 0 6px;
+  }
+  .enroll-title-underline {
+    display: block;
+    width: 92px;
+    margin-top: 10px;
+  }
+  .enroll-sub {
+    margin: 12px 0 0;
+    font-size: 14.5px;
+    color: rgba(243,247,241,0.78);
+    max-width: 40ch;
+    line-height: 1.5;
+  }
+
+  .enroll-form {
+    padding: 26px 24px 28px;
+    display: flex;
+    flex-direction: column;
+    gap: 18px;
+  }
+
+  .field {
+    position: relative;
+  }
+  .field-row {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 14px;
+  }
+  @media (max-width: 420px) {
+    .field-row { grid-template-columns: 1fr; }
+  }
+
+  .field label {
+    display: flex;
+    align-items: center;
+    gap: 7px;
+    font-size: 12.5px;
+    font-weight: 600;
+    color: var(--ink-soft);
+    letter-spacing: 0.01em;
+    margin-bottom: 7px;
+  }
+  .field label svg { flex: none; opacity: 0.75; }
+  .field label .req { color: var(--accent-dark); font-weight: 700; }
+
+  .field input,
+  .field select,
+  .field textarea {
+    width: 100%;
+    font-family: inherit;
+    font-size: 16px;
+    color: var(--ink);
+    background: #FBFCFA;
+    border: 1.5px solid var(--line);
+    border-radius: 12px;
+    padding: 12px 14px;
+    transition: border-color 0.16s ease, box-shadow 0.16s ease, background 0.16s ease;
+    appearance: none;
+  }
+  .field textarea { resize: vertical; min-height: 64px; }
+
+  .field input:hover,
+  .field select:hover,
+  .field textarea:hover {
+    border-color: #BFD1B8;
+  }
+  .field input:focus,
+  .field select:focus,
+  .field textarea:focus {
+    outline: none;
+    border-color: var(--primary);
+    background: #FFFFFF;
+    box-shadow: 0 0 0 4px rgba(47,93,70,0.10);
+  }
+  .field input:focus-visible,
+  .field select:focus-visible,
+  .field textarea:focus-visible {
+    outline: 2px solid var(--accent-dark);
+    outline-offset: 1px;
+  }
+
+  .select-wrap { position: relative; }
+  .select-wrap::after {
+    content: '';
+    position: absolute;
+    right: 15px;
+    top: 50%;
+    width: 9px;
+    height: 9px;
+    border-right: 2px solid var(--ink-soft);
+    border-bottom: 2px solid var(--ink-soft);
+    transform: translateY(-65%) rotate(45deg);
+    pointer-events: none;
+  }
+  .select-wrap select { padding-right: 38px; }
+
+  .prefix-wrap { position: relative; }
+  .prefix-wrap .prefix {
+    position: absolute;
+    left: 14px;
+    top: 50%;
+    transform: translateY(-50%);
+    font-size: 15px;
+    color: var(--ink-soft);
+    font-weight: 500;
+    pointer-events: none;
+  }
+  .prefix-wrap input { padding-left: 30px; }
+
+  .hint {
+    margin: 6px 2px 0;
+    font-size: 12px;
+    color: var(--ink-soft);
+  }
+
+  .submit-btn {
+    margin-top: 8px;
+    width: 100%;
+    border: none;
+    cursor: pointer;
+    font-family: inherit;
+    font-weight: 600;
+    font-size: 16px;
+    letter-spacing: 0.01em;
+    color: #2A1B04;
+    background: linear-gradient(155deg, #F0B15A 0%, var(--accent) 55%, var(--accent-dark) 100%);
+    padding: 15px 20px;
+    border-radius: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 9px;
+    box-shadow: 0 10px 22px -10px rgba(201,130,31,0.65);
+    transition: transform 0.14s ease, box-shadow 0.14s ease, filter 0.14s ease;
+  }
+  .submit-btn:hover {
+    transform: translateY(-1px);
+    box-shadow: 0 14px 26px -10px rgba(201,130,31,0.75);
+    filter: brightness(1.03);
+  }
+  .submit-btn:active {
+    transform: translateY(0);
+    filter: brightness(0.98);
+  }
+  .submit-btn:focus-visible {
+    outline: 2px solid var(--primary-dark);
+    outline-offset: 3px;
+  }
+  .submit-btn svg {
+    transition: transform 0.16s ease;
+  }
+  .submit-btn:hover svg {
+    transform: translateX(3px);
+  }
+
+  .form-footnote {
+    text-align: center;
+    font-size: 12px;
+    color: var(--ink-soft);
+    margin: 2px 0 0;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .submit-btn, .submit-btn svg, .field input, .field select, .field textarea {
+      transition: none !important;
+    }
+  }
+</style>
+
+<div class="enroll-shell">
+  <div class="enroll-card">
+    <div class="enroll-header">
+      <p class="enroll-eyebrow">Student registration</p>
+      <h5 class="enroll-title">Let's get you enrolled</h5>
+      <svg class="enroll-title-underline" viewBox="0 0 92 10" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+        <path d="M2 7C16 3 30 3 44 6C58 9 72 4 90 3" stroke="#E8A33D" stroke-width="2.5" stroke-linecap="round"/>
+      </svg>
+      <p class="enroll-sub">Takes about a minute. Fields marked <strong style="color:#E8A33D">*</strong> are required.</p>
+    </div>
+
+    <form class="enroll-form" method="POST">
+      <div class="field-row">
+        <div class="field">
+          <label for="fname">First name <span class="req">*</span></label>
+          <input type="text" id="fname" name="fname" placeholder="e.g. Umesh" autocomplete="given-name" required>
+        </div>
+        <div class="field">
+          <label for="lname">Last name <span class="req">*</span></label>
+          <input type="text" id="lname" name="lname" placeholder="e.g. Gupta" autocomplete="family-name" required>
+        </div>
+      </div>
+
+      <div class="field-row">
+        <div class="field">
+          <label for="subject">Subject <span class="req">*</span></label>
+          <input type="text" id="subject" name="subject" placeholder="e.g. Hindi" required>
+        </div>
+        <div class="field">
+          <label for="class">Class <span class="req">*</span></label>
+          <input type="number" id="class" name="class" placeholder="e.g. 10" inputmode="numeric" min="1" max="12" required>
+        </div>
+      </div>
+
+      <div class="field">
+        <label for="title">Title <span class="req">*</span></label>
+        <input type="text" id="title" name="title" placeholder="e.g. New registration" required>
+      </div>
+
+      <div class="field-row">
+        <div class="field">
+          <label for="Regfee">Registration fee <span class="req">*</span></label>
+          <div class="prefix-wrap">
+            <span class="prefix">₹</span>
+            <input type="number" id="Regfee" name="Regfee" placeholder="1000" min="0" step="0.01" inputmode="decimal" required>
+          </div>
+        </div>
+        <div class="field">
+          <label for="mobile">Mobile no. <span class="req">*</span></label>
+          <input type="tel" id="mobile" name="mobile" placeholder="98765 43210" pattern="[0-9]{10}" maxlength="10" inputmode="numeric" required>
+        </div>
+      </div>
+
+      <div class="field">
+        <label for="status">Status <span class="req">*</span></label>
+        <div class="select-wrap">
+          <select name="status" id="status" required>
+            <option value="not started" selected>Not started</option>
+            <option value="in progress">In progress</option>
+            <option value="completed">Completed</option>
+          </select>
+        </div>
+      </div>
+
+      <div class="field">
+        <label for="comment">Comment</label>
+        <textarea id="comment" name="comment" rows="2" placeholder="Optional notes"></textarea>
+      </div>
+
+      <button type="submit" class="submit-btn">
+        Register student
+        <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+          <path d="M3 8H13M13 8L9 4M13 8L9 12" stroke="#2A1B04" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+      </button>
+      <p class="form-footnote">We'll only use this to manage the enrollment.</p>
+    </form>
+  </div>
+</div>
 {% endblock %}
