@@ -9,6 +9,15 @@ app = Flask(__name__)
 app.config['SQLALCHEMY_DATABASE_URI'] = os.environ.get('DATABASE_URL')
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 
+# Neon (and other serverless/pooled Postgres) can close idle connections
+# unexpectedly when compute auto-suspends. These options make SQLAlchemy
+# test each connection before using it, and recycle connections that have
+# been open too long, instead of reusing a dead one and crashing.
+app.config['SQLALCHEMY_ENGINE_OPTIONS'] = {
+    'pool_pre_ping': True,
+    'pool_recycle': 280,
+}
+
 db = SQLAlchemy(app)
 
 class Registration(db.Model):
@@ -141,5 +150,3 @@ def send_sms(mobile, fname):
 
 if __name__ == "__main__":
       app.run(debug=True, host='0.0.0.0', port=int(os.environ.get("PORT", 3000)))
-
-
