@@ -31,7 +31,7 @@ class Registration(db.Model):
     title = db.Column('Title', db.String(50))
     registration_fees = db.Column('Registration_fees', db.Float)
     comment = db.Column('comment', db.String(50))
-    status = db.Column('status', db.String(10), default=' ')   
+    status = db.Column('status', db.String(20), default=' ')   
     mobile = db.Column('mobile', db.String(10), nullable=True)    
 
 # ✅ Create tables if they don't exist
